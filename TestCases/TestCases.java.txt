@@ -1,0 +1,117 @@
+package com.sjsu.cmpe283.CMPEInfoCollector.test;
+
+
+import junit.framework.Assert;
+
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import com.sjsu.cmpe283.CMPEInfoCollector.VMInitalizaler;
+import com.sjsu.cmpe283.CMPEInfoCollector.threads.VHostMHealthUpdateThread;
+
+public class TestCases {
+
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		System.out.println("Before");
+	}
+
+	@Test
+	public void BasicTesting(){
+		String SERVER_NAME = "130.65.132.214";
+		String USER_NAME = "administrator";
+		String PASSWORD = "12!@qwQW";
+		String HOSTNAME = "130.65.132.216";
+		String url = "https://" + SERVER_NAME + "/sdk/vimService";
+		DisplayHostCounter dhc = new DisplayHostCounter();
+		dhc.testing(url,USER_NAME,PASSWORD,HOSTNAME);
+		Assert.assertTrue(true);
+	}
+
+	@Test
+	public void BasicTesting1(){
+		String SERVER_NAME = "130.65.132.214";
+		String USER_NAME = "admininstrator";
+		String PASSWORD = "12!@qwQW";
+		String HOSTNAME = "130.65.132.216";
+		String url = "https://" + SERVER_NAME + "/sdk/vimService";
+		DisplayHostCounter dhc = new DisplayHostCounter();
+		dhc.testing(url,USER_NAME,PASSWORD,HOSTNAME);
+		Assert.assertFalse(false);
+	}
+
+	@Test
+	public void BasicTesting2(){
+		String SERVER_NAME = "130.65.132.214";
+		String USER_NAME = "administrator";
+		String PASSWORD = "12!@qwQW";
+		String HOSTNAME = "130.65.132.216";
+		String url = "https://" + SERVER_NAME + "/sdk/vimService";
+		DisplayHostCounter dhc = new DisplayHostCounter();
+		dhc.testing(url,USER_NAME,PASSWORD,HOSTNAME);
+		Assert.assertFalse(false);
+	}
+
+	@Test
+	public void BasicTesting3(){
+		String SERVER_NAME = "130.65.132.214";
+		String USER_NAME = "administrator";
+		String PASSWORD = "12!@qwQW";
+		String HOSTNAME = "130.65.132.216";
+		String url = "https://" + SERVER_NAME + "/sdk/vimService";
+		DisplayHostCounter dhc = new DisplayHostCounter();
+		dhc.testing(url,USER_NAME,PASSWORD,HOSTNAME);
+		Assert.assertFalse(false);
+	}
+
+	@Test
+	public void BasicTesting4(){
+		String SERVER_NAME = "130.65.132.214";
+		String USER_NAME = "administrator";
+		String PASSWORD = "12!@qwQW";
+		String HOSTNAME = "130.65.132.216";
+		String url = "htt://" + SERVER_NAME + "/sdk/vimService";
+		DisplayHostCounter dhc = new DisplayHostCounter();
+		dhc.testing(url,USER_NAME,PASSWORD,HOSTNAME);
+		Assert.assertFalse(false);
+	}	
+
+	@Test
+	public void PingTestPass()throws Exception{
+		String ipAddress = "130.65.132.214";
+		VMInitalizaler init = new VMInitalizaler();
+		init.pingVM(ipAddress);
+		Assert.assertTrue(true);
+	}
+	
+	@Test
+	public void PingTestFail()throws Exception{
+		String ipAddress = "130.65.132.216";
+		VMInitalizaler init = new VMInitalizaler();
+		init.pingVM(ipAddress);
+		Assert.assertFalse(false);
+	}
+	
+	@Test 
+	public void CheckHostPass(){
+		String hostIP = "https://130.65.132.214/sdk";
+		VHostMHealthUpdateThread thread = new VHostMHealthUpdateThread(hostIP);
+		Assert.assertTrue(true);
+	}
+	
+	@Test 
+	public void CheckHostFail(){
+		String hostIP = "https://130.65.132.214/sdk";
+		VHostMHealthUpdateThread thread = new VHostMHealthUpdateThread(hostIP);
+		Assert.assertFalse(false);
+	}
+	
+
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+		System.out.println("After");
+	}
+
+
+}

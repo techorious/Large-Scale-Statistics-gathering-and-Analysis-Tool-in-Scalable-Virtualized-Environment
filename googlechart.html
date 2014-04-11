@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        <title>Google Chart with jsp Mysql Json</title>
+        <style type="text/css">
+.inactive{
+display: none;
+
+}
+.active{
+display: inline-block;
+
+}.chart-wrapper {
+ position: relative;
+    padding-bottom: 40%;
+    width:45%;
+    float:left;
+}
+
+.chart-inner {
+position: absolute;
+    width: 50%; height: 100%;
+}
+</style>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+        <script type="text/javascript">
+           
+            var queryObject="";
+            var queryObjectLen="";
+            $.ajax({
+                type : 'POST',
+                url : 'getdata.jsp',
+                dataType:'json',
+                success : function(data) {
+                	
+                    queryObject = eval('(' + JSON.stringify(data) + ')');
+                    
+                    
+                    queryObjectLen = queryObject.empdetails.length;
+                    
+                    //var cpu[];
+                    var cpu = new Array();
+                    for(var i=0;i<queryObjectLen;i++){
+                        
+                         cpu[i]= queryObject.empdetails[i].cpu;
+                        //alert (queryObject.empdetails[i].cpu)
+                        //alert (cpu[i])
+                    }
+                    alert (cpu.length)
+                    
+                },
+                    error : function(xhr, type) {
+                    alert('server error occoured')
+                }
+            });
+            
+                </script>
+        </head>
+        <body>
+              <div id="chart_div"></div>
+              
+              <div style="width:47%; display:inline-block">
+        <div id="container" class="active" style="width:100%; height: 100%;"></div>
+
+
+        </div>
+           <div style="width:47%; display:inline-block">
+           <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div></div>
+              
+              
+         </body>
+        </html>

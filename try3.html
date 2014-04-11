@@ -1,0 +1,564 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Login Page</title>
+<h1><u>VM Statistics</u></h1>
+
+
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+      <script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+
+<style type="text/css">
+.inactive{
+display: none;
+
+}
+.active{
+display: inline-block;
+
+}.chart-wrapper {
+ position: relative;
+    padding-bottom: 40%;
+    width:45%;
+    float:left;
+}
+
+.chart-inner {
+position: absolute;
+    width: 50%; height: 100%;
+}
+</style>
+
+</head>
+<body bgcolor="#E6E6FA">
+
+<div>
+<a href="try.html">
+<button id="min">Every 5 Minutes Statistics</button>
+</a>
+<a href="try2.html">
+<button id="hour">Every Hour Statistics</button>
+</a>
+
+<a href="try3.html">
+<button id="day">Every 24Hour Statistics</button>
+</a>
+</div>
+
+
+        
+  <div style="width:47%; display:inline-block">
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+</div>
+<div style="width:47%; display:inline-block">
+<div id="container1" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+</div>
+<div style="width:47%; display:inline-block">
+<div id="container2" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+</div>
+
+<div style="width:47%; display:inline-block">
+<div id="container3" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+</div>
+
+
+
+<script>
+   
+
+ 
+
+
+
+		
+$(function () {
+	   var cpu1 = new Array();
+	   var cpu2 = new Array();
+	   var cpu3 = new Array();
+	   
+	 var queryObject="";
+     var queryObjectLen="";
+     $.ajax({
+         type : 'POST',
+         url : 'getdailydata.jsp',
+         dataType:'json',
+         success : function(data) {
+         	
+             queryObject = eval('(' + JSON.stringify(data) + ')');
+             
+             
+             queryObjectLen1 = queryObject.VM01.length;
+             queryObjectLen2 = queryObject.VM02.length;
+             queryObjectLen3 = queryObject.VM03.length;
+             
+             //var cpu[];
+          
+             for(var i=0;i<queryObjectLen1;i++){
+                 
+                  cpu1[i]= queryObject.VM01[i].cpu;
+                 //alert (queryObject.empdetails[i].cpu)
+                 //alert (cpu[i])
+             }
+             for(var i=0;i<queryObjectLen2;i++){
+                 
+                 cpu2[i]= queryObject.VM02[i].cpu;
+                //alert (queryObject.empdetails[i].cpu)
+                //alert (cpu[i])
+            }
+             for(var i=0;i<queryObjectLen3;i++){
+                 
+                 cpu3[i]= queryObject.VM03[i].cpu;
+                //alert (queryObject.empdetails[i].cpu)
+                //alert (cpu[i])
+            }
+             
+             
+         },
+             error : function(xhr, type) {
+             alert('server error occoured')
+         }
+     });
+
+    var options = {
+            chart: {
+             renderTo: 'container',
+                zoomType: 'x',
+                
+                spacingRight: 20
+            },
+            title: {
+                text: 'CPU Utilization Day by Day'
+            },
+         
+            xAxis: {
+                categories: ['24-Day1', '48-Day2', '72-Day3', '96-Day4', '120-Day5', '144-Day6',
+                             '168-Day7'],
+                             title: {
+                                 text: 'Time in Days'
+                             }
+                
+            },
+            yAxis: {
+                title: {
+                    text: 'CPU Utilization'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                shared: true
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            },
+           
+            series: [{
+                name: 'T09_VM01_Lab3',
+                data: []
+            }, {
+                name: 'T09_VM02_Lab4',
+                data: []
+            }, {
+                name: 'T09_VM03_Lab4',
+                data: []
+            }]
+       };
+  
+   
+    
+    
+    alert("showing graphs")
+   	options.series[0].data=cpu1;
+   	options.series[1].data=cpu2;
+   	options.series[2].data=cpu3;
+   	
+   	//options.series[1].data=[23.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6];
+   	//options.series[2].data=[7.0, 23.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6];
+   	
+   	
+      var chart = new Highcharts.Chart(options);
+//      alert(cpu.length); 
+      
+});
+</script>
+<script>
+   
+
+ 
+
+$(function () {
+	   var mem1 = new Array();
+	   var mem2 = new Array();
+	   var mem3 = new Array();
+	   
+	 var queryObject="";
+     var queryObjectLen="";
+     $.ajax({
+         type : 'POST',
+         url : 'getdailydata.jsp',
+         dataType:'json',
+         success : function(data) {
+         	
+             queryObject = eval('(' + JSON.stringify(data) + ')');
+             
+             
+             queryObjectLen1 = queryObject.VM01.length;
+             queryObjectLen2 = queryObject.VM02.length;
+             queryObjectLen3 = queryObject.VM03.length;
+             
+             //var cpu[];
+          
+             for(var i=0;i<queryObjectLen1;i++){
+                 
+            	 mem1[i]= queryObject.VM01[i].mem;
+                 //alert (queryObject.empdetails[i].cpu)
+                 //alert (cpu[i])
+             }
+             for(var i=0;i<queryObjectLen2;i++){
+                 
+            	 mem2[i]= queryObject.VM02[i].mem;
+                //alert (queryObject.empdetails[i].cpu)
+                //alert (cpu[i])
+            }
+             for(var i=0;i<queryObjectLen3;i++){
+                 
+            	 mem3[i]= queryObject.VM03[i].mem;
+                //alert (queryObject.empdetails[i].cpu)
+                //alert (cpu[i])
+            }
+             
+             
+         },
+             error : function(xhr, type) {
+             alert('server error occoured')
+         }
+     });
+
+    var options = {
+            chart: {
+             renderTo: 'container1',
+                zoomType: 'x',
+                
+                spacingRight: 20
+            },
+            title: {
+                text: 'Memory Utilization Day by Day'
+            },
+         
+            xAxis: {
+                categories: ['24-Day1', '48-Day2', '72-Day3', '96-Day4', '120-Day5', '144-Day6',
+                             '168-Day7'],
+                             title: {
+                                 text: 'Time in Days'
+                             }
+                
+            },
+            yAxis: {
+                title: {
+                    text: 'Memory Utilization'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                shared: true
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            },
+           
+            series: [{
+                name: 'T09_VM01_Lab3',
+                data: []
+            }, {
+                name: 'T09_VM02_Lab4',
+                data: []
+            }, {
+                name: 'T09_VM03_Lab4',
+                data: []
+            }]
+       };
+  
+   
+    
+    
+    alert("showing graphs")
+   	options.series[0].data=mem1;
+   	options.series[1].data=mem2;
+   	options.series[2].data=mem3;
+   	
+   	//options.series[1].data=[23.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6];
+   	//options.series[2].data=[7.0, 23.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6];
+   	
+   	
+      var chart = new Highcharts.Chart(options);
+//      alert(cpu.length); 
+   
+});
+</script>
+
+<script>
+   
+
+ 
+
+
+$(function () {
+	   var ioreadwrite1 = new Array();
+	   var ioreadwrite2 = new Array();
+	   var ioreadwrite3 = new Array();
+	   
+	 var queryObject="";
+     var queryObjectLen="";
+     $.ajax({
+         type : 'POST',
+         url : 'getdailydata.jsp',
+         dataType:'json',
+         success : function(data) {
+         	
+             queryObject = eval('(' + JSON.stringify(data) + ')');
+             
+             
+             queryObjectLen1 = queryObject.VM01.length;
+             queryObjectLen2 = queryObject.VM02.length;
+             queryObjectLen3 = queryObject.VM03.length;
+             
+             //var cpu[];
+          
+             for(var i=0;i<queryObjectLen1;i++){
+                 
+            	 ioreadwrite1[i]= queryObject.VM01[i].ioreadwrite;
+                 //alert (queryObject.empdetails[i].cpu)
+                 //alert (cpu[i])
+             }
+             for(var i=0;i<queryObjectLen2;i++){
+                 
+            	 ioreadwrite2[i]= queryObject.VM02[i].ioreadwrite;
+                //alert (queryObject.empdetails[i].cpu)
+                //alert (cpu[i])
+            }
+             for(var i=0;i<queryObjectLen3;i++){
+                 
+            	 ioreadwrite3[i]= queryObject.VM03[i].ioreadwrite;
+                //alert (queryObject.empdetails[i].cpu)
+                //alert (cpu[i])
+            }
+             
+             
+         },
+             error : function(xhr, type) {
+             alert('server error occoured')
+         }
+     });
+
+    var options = {
+            chart: {
+             renderTo: 'container2',
+                zoomType: 'x',
+                
+                spacingRight: 20
+            },
+            title: {
+                text: 'IO Read Write Day by Day'
+            },
+         
+            xAxis: {
+                categories: ['24-Day1', '48-Day2', '72-Day3', '96-Day4', '120-Day5', '144-Day6',
+                             '168-Day7'],
+                             title: {
+                                 text: 'Time in Days'
+                             }               
+                
+            },
+            yAxis: {
+                title: {
+                    text: 'IO Read Write Utilization Day by Day'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                shared: true
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            },
+           
+            series: [{
+                name: 'T09_VM01_Lab3',
+                data: []
+            }, {
+                name: 'T09_VM02_Lab4',
+                data: []
+            }, {
+                name: 'T09_VM03_Lab4',
+                data: []
+            }]
+       };
+  
+   
+    
+    
+    alert("showing graphs")
+   	options.series[0].data=ioreadwrite1;
+   	options.series[1].data=ioreadwrite2;
+   	options.series[2].data=ioreadwrite3;
+   	
+   	//options.series[1].data=[23.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6];
+   	//options.series[2].data=[7.0, 23.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6];
+   	
+   	
+      var chart = new Highcharts.Chart(options);
+//      alert(cpu.length); 
+   
+});
+</script>
+
+<script>
+   
+
+ 
+
+
+$(function () {
+	   var network1 = new Array();
+	   var network2 = new Array();
+	   var network3 = new Array();
+	   
+	 var queryObject="";
+     var queryObjectLen="";
+     $.ajax({
+         type : 'POST',
+         url : 'getdailydata.jsp',
+         dataType:'json',
+         success : function(data) {
+         	
+             queryObject = eval('(' + JSON.stringify(data) + ')');
+             
+             
+             queryObjectLen1 = queryObject.VM01.length;
+             queryObjectLen2 = queryObject.VM02.length;
+             queryObjectLen3 = queryObject.VM03.length;
+             
+             //var cpu[];
+          
+             for(var i=0;i<queryObjectLen1;i++){
+                 
+            	 network1[i]= queryObject.VM01[i].network;
+                 //alert (queryObject.empdetails[i].cpu)
+                 //alert (cpu[i])
+             }
+             for(var i=0;i<queryObjectLen2;i++){
+                 
+            	 network2[i]= queryObject.VM02[i].network;
+                //alert (queryObject.empdetails[i].cpu)
+                //alert (cpu[i])
+            }
+             for(var i=0;i<queryObjectLen3;i++){
+                 
+            	 network3[i]= queryObject.VM03[i].network;
+                //alert (queryObject.empdetails[i].cpu)
+                //alert (cpu[i])
+            }
+             
+             
+         },
+             error : function(xhr, type) {
+             alert('server error occoured')
+         }
+     });
+
+    var options = {
+            chart: {
+             renderTo: 'container3',
+                zoomType: 'x',
+                
+                spacingRight: 20
+            },
+            title: {
+                text: 'Network Utilization Day by Day'
+            },
+         
+            xAxis: {
+                categories: ['24-Day1', '48-Day2', '72-Day3', '96-Day4', '120-Day5', '144-Day6',
+                             '168-Day7'],
+                             title: {
+                                 text: 'Time in Days'
+                             }
+               
+                
+            },
+            yAxis: {
+                title: {
+                    text: 'Network Utilization'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                shared: true
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            },
+           
+            series: [{
+                name: 'T09_VM01_Lab3',
+                data: []
+            }, {
+                name: 'T09_VM02_Lab4',
+                data: []
+            }, {
+                name: 'T09_VM03_Lab4',
+                data: []
+            }]
+       };
+  
+   
+    
+    
+    alert("showing graphs")
+   	options.series[0].data=network1;
+   	options.series[1].data=network2;
+   	options.series[2].data=network3;
+   	
+   	//options.series[1].data=[23.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6];
+   	//options.series[2].data=[7.0, 23.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6];
+   	
+   	
+      var chart = new Highcharts.Chart(options);
+//      alert(cpu.length); 
+         
+});
+</script>
+
+</body>
+</html>
